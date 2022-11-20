@@ -13,7 +13,9 @@ import re
 async def bot_start(msg: types.Message):
     register_user(msg.from_id, msg.from_user.username, msg.from_user.first_name, msg.from_user.last_name)
     if get_phone_number(msg.from_id):
-       await msg.answer_photo('AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', "Ассалаўма әлейкум")
+       await msg.answer_photo(
+            photo='AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', 
+            caption="Ассалаўма әлейкум", reply_markup=menu_btn())
     else:
         await msg.answer("phone number", reply_markup=phone_number)
         await PhoneForm.next()
@@ -27,7 +29,10 @@ async def Bot_Phone_Form(msg: types.Message, state: FSMContext):
     regex = "^[\+]?(998)?([- (])?(90|91|93|94|95|98|99|33|97|71|75)([- )])?(\d{3})([- ])?(\d{2})([- ])?(\d{2})$"
     if re.search(regex, phone):
         update_phone_number(msg.from_id, phone)
-        await msg.answer_photo('AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', "Ассалаўма әлейкум")
+        await msg.answer_photo(
+                photo='AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', 
+                caption="Ассалаўма әлейкум",
+                reply_markup=menu_btn())
         await state.finish()
     else: await msg.reply("Nomerdi qate kiritiniz\nO'zbekistan nomerin kiritin':")
 
@@ -47,7 +52,10 @@ async def qeuiz_answer(msg: types.Message):
     if msg.text == '🔝 Menu':
         await msg.answer("Ассалаўма әлейкум", reply_markup=menu_btn())
     if msg.text == 'Биз қандай ислеймиз':
-        await msg.answer_photo('AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', "caption")
+        await msg.answer_photo(
+                photo='AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', 
+                caption="caption", 
+                reply_markup=menu_btn())
     if msg.text == 'Бийпул маглыумат':
         data_user = get_user(msg.from_id)[0]
         await msg.reply("Siz benen tez siz benen baylanisadi:", reply_markup=menu_btn())

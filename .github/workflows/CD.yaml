@@ -1,16 +1,22 @@
-name: Python CI
-
-on: [push]
+name: deploying changes
+on:
+  push:
+    branches: [main]
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-    - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
+      - name: deploying changes
+        uses: appleboy/ssh-action@master
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: 'github-actions-heroku-develop'
-          heroku_email: 'zafarsaleem3@gmail.com'
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            export DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
+            sh deploy_changes.sh
+            ls -al
