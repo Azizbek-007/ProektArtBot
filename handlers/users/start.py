@@ -15,7 +15,7 @@ async def bot_start(msg: types.Message):
     if get_phone_number(msg.from_id):
        await msg.answer_photo(
             photo='AgACAgIAAxkBAAIEzmN4-G8SrULQ27hoJ4RFpum5uGjGAALJvjEb0RHIS59geQJs-RBbAQADAgADcwADKwQ', 
-            caption="Ассалаўма әлейкум", reply_markup=menu_btn())
+            caption="Ассалаўма әлейкум.", reply_markup=menu_btn())
     else:
         await msg.answer("phone number", reply_markup=phone_number)
         await PhoneForm.next()
