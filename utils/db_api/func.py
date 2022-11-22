@@ -99,7 +99,7 @@ def get_xls():
     mysel=c.execute("select * from USERS")
     f1=workbook.add_format({'bold':True, 'border':1, 'border_color': 'black', 'align':'center'})
     f2=workbook.add_format({'border':1, 'border_color':'black', 'align':'center'})
-    worksheet.write_row('A1', ['id', 'username', 'firstname', 'lastname', 'phone', 'created_at'], f1)
+    worksheet.write_row('A1', ['user_id', 'username', 'firstname', 'lastname', 'phone', 'created_at'], f1)
     for i, row in enumerate(mysel):
         i+=1
         worksheet.write(i, 0, row[0], f2)

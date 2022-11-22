@@ -1,6 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.dispatcher import FSMContext
+from data.config import ADMINS
 from states import MessageForm, CategoryForm, SendAll
 from keyboards.inline import category_btn, cencel_btn, menuIN_btn, order_delete_btn
 from utils.db_api import create_message, create_category, get_message, delete_message, delete_category, get_users, get_xls,\
@@ -9,7 +10,7 @@ from loader import dp
 import re
 import asyncio
 
-@dp.message_handler(commands=['admin'])
+@dp.message_handler(commands=['admin'], user_id=ADMINS)
 async def hello_admin(msg: types.Message):
     await msg.answer("Hello admin", reply_markup=category_btn())
 
