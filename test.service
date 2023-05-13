@@ -1,0 +1,12 @@
+[Unit]
+After=network.target
+Description=Istagan matnlariz
+
+[Service]
+Type=simple
+WorkingDirectory=/root/Proekt
+ExecStart=/usr/bin/python3 app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

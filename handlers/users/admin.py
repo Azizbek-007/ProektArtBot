@@ -8,8 +8,9 @@ users_count
 from loader import dp
 import re
 import asyncio
+from data.config import ADMINS
 
-@dp.message_handler(commands=['admin'])
+@dp.message_handler(commands=['admin'], user_id=ADMINS)
 async def hello_admin(msg: types.Message):
     await msg.answer("Hello admin", reply_markup=category_btn())
 
@@ -33,7 +34,7 @@ async def send_message_frwd(call: types.CallbackQuery):
 async def cencel(call: types.CallbackQuery, state: FSMContext):
     await call.answer()
     await state.finish()
-    await call.message.answer("Biykar etildi")
+    await call.message.answer("Бийкар етилди")
 
 @dp.callback_query_handler(lambda call: 'menu_id=' in call.data)
 async def add_category_for_msg(call: types.CallbackQuery, state: FSMContext):
@@ -41,13 +42,13 @@ async def add_category_for_msg(call: types.CallbackQuery, state: FSMContext):
     menu_id = call.data.split('=')[1]
     await state.update_data(menu_id=menu_id)
     await CategoryForm.name.set()
-    await call.message.answer("menu atin kiritin':", reply_markup=cencel_btn)
+    await call.message.answer("Меню атын киритиң:", reply_markup=cencel_btn)
 
 @dp.message_handler(state=CategoryForm.name, content_types=['text'])
 async def set_text_category(msg: types.Message, state: FSMContext):
     data = await state.get_data()
     create_category(data['menu_id'], msg.text)
-    await msg.answer("qosildi")
+    await msg.answer("Қосылды ✅")
     await state.finish()
     await msg.answer("Hello admin", reply_markup=category_btn())   
 
@@ -55,7 +56,7 @@ async def set_text_category(msg: types.Message, state: FSMContext):
 async def add_category_for_msg(call: types.CallbackQuery, state: FSMContext):
     await call.answer()
     menu_id = call.data.split('=')[1]
-    await call.message.answer("Menu In", reply_markup=menuIN_btn(menu_id))
+    await call.message.answer("Менюдиң ишки бөлими!", reply_markup=menuIN_btn(menu_id))
 
 @dp.callback_query_handler(lambda call: 'menuIN_id=' in call.data)
 async def add_category_for_msg(call: types.CallbackQuery, state: FSMContext):
@@ -63,11 +64,11 @@ async def add_category_for_msg(call: types.CallbackQuery, state: FSMContext):
     category_id = call.data.split('=')[1]
     await state.update_data(cat_id=category_id)
     await MessageForm.photo.set()
-    await call.message.answer("Photo jiberin':", reply_markup=cencel_btn)
+    await call.message.answer("Сүўрет жибериң:", reply_markup=cencel_btn)
 
 @dp.message_handler(state=MessageForm.photo, content_types=['photo'])
 async def set_photo(msg: types.Message, state: FSMContext):
-    await msg.answer("caption ushin text jiberin':", reply_markup=cencel_btn)
+    await msg.answer("Пост ушын текст киритиң:", reply_markup=cencel_btn)
     photo_id = msg.photo[0].file_id
     await state.update_data(photo=photo_id)
     await MessageForm.next()
@@ -76,7 +77,7 @@ async def set_photo(msg: types.Message, state: FSMContext):
 async def set_photo(msg: types.Message, state: FSMContext):
     data = await state.get_data()
     create_message(data['cat_id'], msg.text, data['photo'])
-    await msg.answer("qosildi")
+    await msg.answer("Қосылды ✅")
     await state.finish()
     await msg.answer("Hello admin", reply_markup=category_btn())
 
@@ -92,7 +93,7 @@ async def send_messge_users(msg: types.Message, state: FSMContext):
             await asyncio.sleep(.07)
             s +=1
         except: n +=1
-    await msg.reply(f"jiberildi: {s}\njiberilmedi: {n}")
+    await msg.reply(f"Жиберилди: {s}\nЖиберилмеди: {n}")
 
 @dp.message_handler(state=SendAll.forward)
 async def send_messge_forward(msg: types.Message, state: FSMContext):
@@ -106,7 +107,7 @@ async def send_messge_forward(msg: types.Message, state: FSMContext):
             await asyncio.sleep(.07)
             s +=1
         except: n +=1
-    await msg.reply(f"jiberildi: {s}\njiberilmedi: {n}")
+    await msg.reply(f"Жиберилди: {s}\nЖиберилмеди: {n}")
 
 
 @dp.callback_query_handler(lambda call: 'CategoryOpen=' in call.data)
@@ -116,7 +117,7 @@ async def set_cat_open(call: types.CallbackQuery):
     if len(data) > 0:
         for x in data:
             await call.message.answer_photo(x[3], x[2], reply_markup=order_delete_btn(x[0]))
-    else: await call.answer("Maglumat joq", True)
+    else: await call.answer("Мағлыўмат жоқ", True)
 
 @dp.callback_query_handler(lambda call: 'msg_del' in call.data)
 async def delete_product(call: types.CallbackQuery):
